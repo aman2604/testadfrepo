@@ -52,6 +52,9 @@
 				"parameters": {
 					"inputDateTime": {
 						"type": "string"
+					},
+					"textTypeParam": {
+						"type": "string"
 					}
 				},
 				"variables": {
