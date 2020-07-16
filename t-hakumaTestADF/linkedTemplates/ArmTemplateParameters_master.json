@@ -5,6 +5,12 @@
 		"factoryName": {
 			"value": "t-hakumaTestADF"
 		},
+		"ADLS_ffotestc14_access_servicePrincipalKey": {
+			"value": ""
+		},
+		"ADX_KustoDB_access_servicePrincipalKey": {
+			"value": ""
+		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"value": "https://hakumatest1.azuredatalakestore.net/webhdfs/v1"
 		},
@@ -19,6 +25,30 @@
 		},
 		"trigger1_properties_pipeline_parameters_inputDateTime": {
 			"value": "@trigger().outputs.windowEndTime"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_dataLakeStoreUri": {
+			"value": "https://ffo-test-c14.azuredatalakestore.net/webhdfs/v1"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_servicePrincipalId": {
+			"value": "f38a2f13-8010-44a4-acc6-e48ae498044b"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_tenant": {
+			"value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_subscriptionId": {
+			"value": "e5283aaf-5ff6-422f-8160-e148c74bfd31"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_resourceGroupName": {
+			"value": "conv"
+		},
+		"ADX_KustoDB_access_properties_typeProperties_tenant": {
+			"value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"ADX_KustoDB_access_properties_typeProperties_servicePrincipalId": {
+			"value": "f38a2f13-8010-44a4-acc6-e48ae498044b"
+		},
+		"ADX_KustoDB_access_properties_typeProperties_database": {
+			"value": "testavocadomigrationDB"
 		},
 		"containerUri": {
 			"value": ""

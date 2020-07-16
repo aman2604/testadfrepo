@@ -7,6 +7,14 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "t-hakumaTestADF"
 		},
+		"ADLS_ffotestc14_access_servicePrincipalKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalKey' of 'ADLS_ffotestc14_access'"
+		},
+		"ADX_KustoDB_access_servicePrincipalKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalKey' of 'ADX_KustoDB_access'"
+		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
 			"defaultValue": "https://hakumatest1.azuredatalakestore.net/webhdfs/v1"
@@ -26,6 +34,38 @@
 		"trigger1_properties_pipeline_parameters_inputDateTime": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowEndTime"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_dataLakeStoreUri": {
+			"type": "string",
+			"defaultValue": "https://ffo-test-c14.azuredatalakestore.net/webhdfs/v1"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "f38a2f13-8010-44a4-acc6-e48ae498044b"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_subscriptionId": {
+			"type": "string",
+			"defaultValue": "e5283aaf-5ff6-422f-8160-e148c74bfd31"
+		},
+		"ADLS_ffotestc14_access_properties_typeProperties_resourceGroupName": {
+			"type": "string",
+			"defaultValue": "conv"
+		},
+		"ADX_KustoDB_access_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"ADX_KustoDB_access_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "f38a2f13-8010-44a4-acc6-e48ae498044b"
+		},
+		"ADX_KustoDB_access_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "testavocadomigrationDB"
 		},
 		"containerUri": {
 			"type": "string",
@@ -54,6 +94,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"ADLS_ffotestc14_access_servicePrincipalKey": {
+						"value": "[parameters('ADLS_ffotestc14_access_servicePrincipalKey')]"
+					},
+					"ADX_KustoDB_access_servicePrincipalKey": {
+						"value": "[parameters('ADX_KustoDB_access_servicePrincipalKey')]"
+					},
 					"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 						"value": "[parameters('AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri')]"
 					},
@@ -65,6 +111,30 @@
 					},
 					"AzureDataLakeStore1_properties_typeProperties_resourceGroupName": {
 						"value": "[parameters('AzureDataLakeStore1_properties_typeProperties_resourceGroupName')]"
+					},
+					"ADLS_ffotestc14_access_properties_typeProperties_dataLakeStoreUri": {
+						"value": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_dataLakeStoreUri')]"
+					},
+					"ADLS_ffotestc14_access_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_servicePrincipalId')]"
+					},
+					"ADLS_ffotestc14_access_properties_typeProperties_tenant": {
+						"value": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_tenant')]"
+					},
+					"ADLS_ffotestc14_access_properties_typeProperties_subscriptionId": {
+						"value": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_subscriptionId')]"
+					},
+					"ADLS_ffotestc14_access_properties_typeProperties_resourceGroupName": {
+						"value": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_resourceGroupName')]"
+					},
+					"ADX_KustoDB_access_properties_typeProperties_tenant": {
+						"value": "[parameters('ADX_KustoDB_access_properties_typeProperties_tenant')]"
+					},
+					"ADX_KustoDB_access_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('ADX_KustoDB_access_properties_typeProperties_servicePrincipalId')]"
+					},
+					"ADX_KustoDB_access_properties_typeProperties_database": {
+						"value": "[parameters('ADX_KustoDB_access_properties_typeProperties_database')]"
 					},
 					"trigger1_properties_pipeline_parameters_inputDateTime": {
 						"value": "[parameters('trigger1_properties_pipeline_parameters_inputDateTime')]"
