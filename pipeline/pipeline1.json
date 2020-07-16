@@ -55,7 +55,7 @@
 				]
 			},
 			{
-				"name": "Copy data2",
+				"name": "ADLS_to_ADLS",
 				"type": "Copy",
 				"dependsOn": [
 					{
