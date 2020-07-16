@@ -15,26 +15,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalKey' of 'ADX_KustoDB_access'"
 		},
-		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
-			"type": "string",
-			"defaultValue": "https://hakumatest1.azuredatalakestore.net/webhdfs/v1"
-		},
-		"AzureDataLakeStore1_properties_typeProperties_tenant": {
-			"type": "string",
-			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
-		},
-		"AzureDataLakeStore1_properties_typeProperties_subscriptionId": {
-			"type": "string",
-			"defaultValue": "6e007163-28ab-48d9-af19-4382829fabb8"
-		},
-		"AzureDataLakeStore1_properties_typeProperties_resourceGroupName": {
-			"type": "string",
-			"defaultValue": "t-hakuma"
-		},
-		"trigger1_properties_pipeline_parameters_inputDateTime": {
-			"type": "string",
-			"defaultValue": "@trigger().outputs.windowEndTime"
-		},
 		"ADLS_ffotestc14_access_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
 			"defaultValue": "https://ffo-test-c14.azuredatalakestore.net/webhdfs/v1"
@@ -66,6 +46,26 @@
 		"ADX_KustoDB_access_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "testavocadomigrationDB"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
+			"type": "string",
+			"defaultValue": "https://hakumatest1.azuredatalakestore.net/webhdfs/v1"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_subscriptionId": {
+			"type": "string",
+			"defaultValue": "6e007163-28ab-48d9-af19-4382829fabb8"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_resourceGroupName": {
+			"type": "string",
+			"defaultValue": "t-hakuma"
+		},
+		"trigger1_properties_pipeline_parameters_inputDateTime": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowEndTime"
 		}
 	},
 	"variables": {
@@ -79,17 +79,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Set variable1",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "test",
-							"value": "asd1"
-						}
-					},
-					{
-						"name": "Copy data1",
+						"name": "Kusto_to_ADLS",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -141,6 +131,72 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "ADLS_to_ADLS",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Kusto_to_ADLS",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureDataLakeStoreReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureDataLakeStoreWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DelimitedText2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"parameters": {
@@ -161,7 +217,28 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureDataExplorerTable1')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]"
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataExplorerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADX_KustoDB_access",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [],
+				"typeProperties": {
+					"table": "AdmissionSubmissionGetAllDataVisualData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADX_KustoDB_access')]"
 			]
 		},
 		{
@@ -190,6 +267,74 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ADLS_ffotestc14_access')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLS_ffotestc14_access",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureDataLakeStoreLocation",
+						"fileName": "testcopy.csv",
+						"folderPath": "local/amkansal/Output"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADLS_ffotestc14_access')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADLS_ffotestc14_access')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDataLakeStore",
+				"typeProperties": {
+					"dataLakeStoreUri": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_dataLakeStoreUri')]",
+					"servicePrincipalId": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalKey": {
+						"type": "SecureString",
+						"value": "[parameters('ADLS_ffotestc14_access_servicePrincipalKey')]"
+					},
+					"tenant": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_tenant')]",
+					"subscriptionId": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_subscriptionId')]",
+					"resourceGroupName": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_resourceGroupName')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADX_KustoDB_access')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDataExplorer",
+				"typeProperties": {
+					"endpoint": "https://testavocadomigration.eastus.kusto.windows.net",
+					"tenant": "[parameters('ADX_KustoDB_access_properties_typeProperties_tenant')]",
+					"servicePrincipalId": "[parameters('ADX_KustoDB_access_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalKey": {
+						"type": "SecureString",
+						"value": "[parameters('ADX_KustoDB_access_servicePrincipalKey')]"
+					},
+					"database": "[parameters('ADX_KustoDB_access_properties_typeProperties_database')]"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStore1')]",
@@ -238,67 +383,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/pipeline1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ADLS_ffotestc14_access')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureDataLakeStore",
-				"typeProperties": {
-					"dataLakeStoreUri": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_dataLakeStoreUri')]",
-					"servicePrincipalId": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_servicePrincipalId')]",
-					"servicePrincipalKey": {
-						"type": "SecureString",
-						"value": "[parameters('ADLS_ffotestc14_access_servicePrincipalKey')]"
-					},
-					"tenant": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_tenant')]",
-					"subscriptionId": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_subscriptionId')]",
-					"resourceGroupName": "[parameters('ADLS_ffotestc14_access_properties_typeProperties_resourceGroupName')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ADX_KustoDB_access')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureDataExplorer",
-				"typeProperties": {
-					"endpoint": "https://testavocadomigration.eastus.kusto.windows.net",
-					"tenant": "[parameters('ADX_KustoDB_access_properties_typeProperties_tenant')]",
-					"servicePrincipalId": "[parameters('ADX_KustoDB_access_properties_typeProperties_servicePrincipalId')]",
-					"servicePrincipalKey": {
-						"type": "SecureString",
-						"value": "[parameters('ADX_KustoDB_access_servicePrincipalKey')]"
-					},
-					"database": "[parameters('ADX_KustoDB_access_properties_typeProperties_database')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureDataExplorerTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ADX_KustoDB_access",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureDataExplorerTable",
-				"schema": [],
-				"typeProperties": {
-					"table": "AdmissionSubmissionGetAllDataVisualData"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ADX_KustoDB_access')]"
 			]
 		}
 	]

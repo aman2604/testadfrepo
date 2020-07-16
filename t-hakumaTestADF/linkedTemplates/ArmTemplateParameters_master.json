@@ -11,21 +11,6 @@
 		"ADX_KustoDB_access_servicePrincipalKey": {
 			"value": ""
 		},
-		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
-			"value": "https://hakumatest1.azuredatalakestore.net/webhdfs/v1"
-		},
-		"AzureDataLakeStore1_properties_typeProperties_tenant": {
-			"value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
-		},
-		"AzureDataLakeStore1_properties_typeProperties_subscriptionId": {
-			"value": "6e007163-28ab-48d9-af19-4382829fabb8"
-		},
-		"AzureDataLakeStore1_properties_typeProperties_resourceGroupName": {
-			"value": "t-hakuma"
-		},
-		"trigger1_properties_pipeline_parameters_inputDateTime": {
-			"value": "@trigger().outputs.windowEndTime"
-		},
 		"ADLS_ffotestc14_access_properties_typeProperties_dataLakeStoreUri": {
 			"value": "https://ffo-test-c14.azuredatalakestore.net/webhdfs/v1"
 		},
@@ -49,6 +34,21 @@
 		},
 		"ADX_KustoDB_access_properties_typeProperties_database": {
 			"value": "testavocadomigrationDB"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
+			"value": "https://hakumatest1.azuredatalakestore.net/webhdfs/v1"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_tenant": {
+			"value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_subscriptionId": {
+			"value": "6e007163-28ab-48d9-af19-4382829fabb8"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_resourceGroupName": {
+			"value": "t-hakuma"
+		},
+		"trigger1_properties_pipeline_parameters_inputDateTime": {
+			"value": "@trigger().outputs.windowEndTime"
 		},
 		"containerUri": {
 			"value": ""
