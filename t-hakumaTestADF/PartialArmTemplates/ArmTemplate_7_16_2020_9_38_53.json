@@ -1,0 +1,37 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "t-hakumaTestADF"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ADLS_ffotestc14_access')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDataLakeStore",
+				"typeProperties": {
+					"dataLakeStoreUri": "https://ffo-test-c14.azuredatalakestore.net/webhdfs/v1",
+					"servicePrincipalId": "f38a2f13-8010-44a4-acc6-e48ae498044b",
+					"servicePrincipalKey": {
+						"type": "SecureString",
+						"value": "**********"
+					},
+					"tenant": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+					"subscriptionId": "e5283aaf-5ff6-422f-8160-e148c74bfd31",
+					"resourceGroupName": "conv"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
