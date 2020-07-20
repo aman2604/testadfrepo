@@ -5,11 +5,24 @@
 			"referenceName": "ADLS_ffotestc14_access",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"filePath": {
+				"type": "string"
+			},
+			"fileName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureDataLakeStoreLocation"
+				"type": "AzureDataLakeStoreLocation",
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
+				"folderPath": "local/amkansal/Output"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

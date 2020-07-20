@@ -1,0 +1,23 @@
+{
+	"name": "AzureDataExplorerTable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADX_KustoDB_access",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tableName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
+		}
+	}
+}
